@@ -11,10 +11,10 @@ function LoginScreen({navigation}) {
         <Text className='text-xl'>Logo Goes Here</Text>
       </View>
       <View className="w-[80vw] mb-20">
-        <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 mb-5 rounded-xl">
+        <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 mb-5 rounded-full">
           <Text className="font-medium text-xl">Login</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 rounded-xl">
+        <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 rounded-full">
           <Text className="font-medium text-xl">Sign Up</Text>
         </Pressable>
       </View>
