@@ -2,6 +2,7 @@ import { ScrollView, Text, View, Pressable, ImageBackground, Image } from 'react
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// Component to handle generic meal cards. (These appear as menu items on the Restaurant screen)
 function MealCard() {
     return (
         <View className='border-2 border-gray-300 rounded-2xl w-[85vw] pb-2 mb-8'>
@@ -19,9 +20,11 @@ function MealCard() {
     )
 }
 
+// Displays Restaurant Menu
 function RestaurantScreen({navigation}) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">
+        {/* Top View is a banner image with text */}
         <View className="flex-1 items-center bg-white">
         <ImageBackground
             className='w-[100vw] h-[250px] pt-[100px]'
@@ -31,6 +34,9 @@ function RestaurantScreen({navigation}) {
             <Text className='text-5xl text-white font-bold'>Taco Bell</Text>
             </View>
         </ImageBackground>
+        
+        {/* Example Meal Cards to See List*/}
+
         <View className='mt-8'>
             <MealCard />
             <MealCard />
@@ -40,6 +46,7 @@ function RestaurantScreen({navigation}) {
             <MealCard />
         </View>
 
+        {/* Dev Button for nav before custom back button is added */}
         <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 rounded-xl">
           <Text className="font-medium text-xl">Home</Text>
         </Pressable>
