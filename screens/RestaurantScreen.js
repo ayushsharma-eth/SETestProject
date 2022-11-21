@@ -1,4 +1,5 @@
 import { ScrollView, Text, View, Pressable, ImageBackground, Image } from 'react-native';
+import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -7,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // image: "url"
 // https://image.shutterstock.com/image-photo/stock-photo-close-up-headshot-portrait-of-smiling-s-caucasian-man-look-at-camera-posing-in-own-flat-or-250nw-1936610998.jpg
 // https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg
-function MealCard() {
+function MealCard({data}) {
     return (
         <View className='border-2 border-gray-300 rounded-2xl w-[85vw] pb-2 mb-8'>
             <ImageBackground
@@ -15,17 +16,40 @@ function MealCard() {
                 source={{uri: 'https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg'}}
             />
             <View className="flex flex-row justify-between">
-                <Text className="pl-4 pt-2 text-2xl font-medium">3 Taco Meal</Text>
-                <Pressable className="bg-red-300 py-2 px-5 mt-2 mr-4 items-center rounded-xl">
-                     <Text className="font-medium text-md">Add</Text>
-                </Pressable>
+                <View>
+                    <Text className="pl-4 pt-2 text-2xl font-medium">{data.name} </Text>
+                    <Text className="pl-4 text-lg font-medium">${data.cost}</Text>
+                </View>
+                <View className="my-auto">
+                    <Pressable className="bg-red-300 py-2 px-5 mt-2 mr-2 items-center rounded-full">
+                        <Text className="font-medium text-white text-md">Add</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
 }
 
 // Displays Restaurant Menu
-function RestaurantScreen({navigation}) {
+function RestaurantScreen({navigation, route}) {
+
+  const { data } = route.params;
+  const [ menu, setMenu ] = useState([]);
+
+  const getMenu = () => {
+    fetch(`http://127.0.0.1:3000/getRMenu/${data.idRestaurant}`)
+    .then(async(res) => await res.json())
+    .then((data) => {
+      setMenu(data[0]);
+      console.log(menu);
+    })
+  }
+
+  useEffect(() => {
+    getMenu()
+  }, [])
+  
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">
         {/* Top View is a banner image with text */}
@@ -35,20 +59,21 @@ function RestaurantScreen({navigation}) {
             source={{uri: 'https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg'}}
         >
             <View style={{position: 'absolute', left: 10, bottom: 10, justifyContent: 'center', alignItems: 'center'}}>
-            <Text className='text-5xl text-white font-bold'>Taco Bell</Text>
+            <Text className='text-5xl text-white font-bold'>{data.name}</Text>
             </View>
         </ImageBackground>
         
         {/* Example Meal Cards to See List*/}
 
-        <View className='mt-8'>
-            <MealCard />
-            <MealCard />
-            <MealCard />
-            <MealCard />
-            <MealCard />
-            <MealCard />
-        </View>
+        <View className='mt-8' />
+
+        { menu &&
+          menu.map((e, i) => {
+            return (
+                <MealCard data={menu[i]} />
+            )
+          })
+        }
 
         {/* Dev Button for nav before custom back button is added */}
         <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 rounded-xl">
