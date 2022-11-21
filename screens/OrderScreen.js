@@ -88,7 +88,7 @@ export default function OrderScreen({navigation}) {
                 <View className='ml-5 mt-3'>
                     <FlatList
                         data={[
-                        {key: '1x Coke'},
+                        {key: '1x Diet Coke'},
                         {key: '3x 3 Taco Meal'},
                         {key: '1x 2 Taco Meal'},
                         {key: '3x Burrito'},
