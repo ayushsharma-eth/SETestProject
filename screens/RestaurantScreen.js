@@ -69,6 +69,7 @@ function RestaurantScreen({navigation, route}) {
   const { data } = route.params;
   const [ menu, setMenu ] = useState([]);
   const [ quantities, setQuantities ] = useState([]);
+  const [ totalItems, setTotalItems ] = useState(0);
 
 
   const updateQuantity = (quantity, index) => {
@@ -95,40 +96,59 @@ function RestaurantScreen({navigation, route}) {
   useEffect(() => {
     getMenu()
   }, [])
+
+  useEffect(() => {
+    let temp = 0;
+    for (var i = 0; i < quantities.length; i++) {
+        temp += quantities[i];
+    }
+    setTotalItems(temp);
+  }, [quantities])
   
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-white">
-        {/* Top View is a banner image with text */}
-        <View className="flex-1 items-center bg-white">
-        <ImageBackground
-            className='w-[100vw] h-[250px] pt-[100px]'
-            source={{uri: 'https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg'}}
-        >
-            <View style={{position: 'absolute', left: 10, bottom: 10, justifyContent: 'center', alignItems: 'center'}}>
-            <Text className='text-5xl text-white font-bold'>{data.name}</Text>
+    <View>
+        <ScrollView  className="bg-white">
+            {/* Top View is a banner image with text */}
+            <View className="flex-1 items-center bg-white">
+                <ImageBackground
+                    className='w-[100vw] h-[250px] pt-[100px]'
+                    source={{uri: 'https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg'}}
+                >
+                    <View style={{position: 'absolute', left: 10, bottom: 10, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text className='text-5xl text-white font-bold'>{data.name}</Text>
+                    </View>
+                </ImageBackground>
+                
+                {/* Example Meal Cards to See List*/}
+
+                <View className='mt-8' />
+
+                { menu && quantities &&
+                menu.map((e, i) => {
+                    return (
+                        <MealCard data={menu[i]} quantity={quantities[i]} updateQuantity={updateQuantity} index={i}/>
+                    )
+                })
+                }
             </View>
-        </ImageBackground>
-        
-        {/* Example Meal Cards to See List*/}
-
-        <View className='mt-8' />
-
-        { menu && quantities &&
-          menu.map((e, i) => {
-            return (
-                <MealCard data={menu[i]} quantity={quantities[i]} updateQuantity={updateQuantity} index={i}/>
-            )
-          })
-        }
-
-        {/* Dev Button for nav before custom back button is added */}
-        <Pressable onPress={() => navigation.navigate('Home')} className="bg-white w-full items-center py-5 rounded-xl">
-          <Text className="font-medium text-xl">Home</Text>
-        </Pressable>
-        </View>
-    </ScrollView>
+        </ScrollView>
+        {totalItems > 0 && <View className='absolute bottom-5 items-center w-full'>
+            <View className='bg-red-400 p-4 rounded-full'>
+            <Pressable className="flex flex-row justify-center w-[150px]"
+            onPress={() => {
+                navigation.navigate('Home');
+            }}>
+                <Text className='text-white text-lg font-bold my-auto pr-2'>Checkout</Text>
+                <View className="bg-white rounded-full px-3 py-2 ml-2 my-auto">
+                    <Text className="bg-white">{totalItems}</Text>
+                </View>
+            </Pressable>
+            </View>
+        </View>}
+    </View>
   )
 }
+//for scroll view: contentContainerStyle={{ flexGrow: 1 }} (Removed)
 
 export default RestaurantScreen

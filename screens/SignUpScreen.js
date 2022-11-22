@@ -123,7 +123,7 @@ function SignUpScreen({navigation}) {
                 }
             }}
         />
-        <View className="bg-orange-400 rounded-2xl w-[80vw] p-4 items-center justify-center mb-4">
+        <View className="bg-orange-400 rounded-3xl w-[80vw] p-4 items-center justify-center mb-4">
             <Text className="text-white font-bold">Passwords must contain at least one capital letter and one special character</Text>
         </View>
         <TextInput autoCapitalize="none" className="w-[80vw] h-[50px] bg-white rounded-full p-4 mb-4 text-red-300" placeholder="Password" 
