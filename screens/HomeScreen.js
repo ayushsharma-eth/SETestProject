@@ -125,7 +125,7 @@ function HomeScreen({navigation}) {
         <Pressable onPress={() => navigation.navigate('Order')} className="bg-white w-full items-center py-5 rounded-xl">
           <Text className="font-medium text-xl">Active Order</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Login')} className="bg-white w-full items-center py-5 rounded-xl">
+        <Pressable onPress={() => navigation.navigate('Initial')} className="bg-white w-full items-center py-5 rounded-xl">
           <Text className="font-medium text-xl">Sign Out</Text>
         </Pressable>
         <Pressable onPress={() => getText()} className="bg-white w-full items-center py-5 rounded-xl">
