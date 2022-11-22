@@ -30,18 +30,24 @@ function LoginScreen({navigation}) {
                 }
             })
         } else {
-            fetch(`http://127.0.0.1:3000/loginUserByPhone/${userName}/${password}`)
-            .then(async(res) => await res.json())
-            .then((data) => {
-                if (data == "Invalid User Name or Password")
-                {
-                    setErrorMessage("Invalid User Name or Password")
-                }
-                else
-                {
-                    navigation.navigate('Home');
-                }
-            })
+            if (userName==="dev") { // Dev access to skip login
+                navigation.navigate('Home');
+            } 
+            else 
+            {
+                fetch(`http://127.0.0.1:3000/loginUserByPhone/${userName}/${password}`)
+                .then(async(res) => await res.json())
+                .then((data) => {
+                    if (data == "Invalid User Name or Password")
+                    {
+                        setErrorMessage("Invalid User Name or Password")
+                    }
+                    else
+                    {
+                        navigation.navigate('Home');
+                    }
+                })
+            }
         }
     }
     else if (userName)
