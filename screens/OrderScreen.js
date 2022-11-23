@@ -1,10 +1,11 @@
-import { Image, Text, View, Pressable, Animated, TouchableOpacity, FlatList } from 'react-native';
+import { Image, Text, View, Pressable, Animated, TouchableOpacity, FlatList, TouchableWithoutFeedback } from 'react-native';
 import {useState, useEffect, useRef} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useDidMountEffect from '../hooks/useDidMountEffect';
 
 import banana from './banana.png'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import MapView from 'react-native-maps';
 
@@ -13,7 +14,27 @@ import { Marker } from 'react-native-maps';
 // Phone Icon: https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/phone-icon-18-256.png
 // images/text_icon.png
 
-export default function OrderScreen({navigation}) {
+export default function OrderScreen({navigation, route}) {
+
+  const { userInfo } = route.params;
+
+  navigation.setOptions({
+    headerShown: true,
+    headerTitle: "",
+    headerTransparent: true,
+    headerMode: "screen",
+    headerLeft: () => {
+      return (
+      <TouchableWithoutFeedback 
+          onPress={() => navigation.navigate('Home', {
+            userInfo: userInfo
+          })}
+      >
+        <Icon name="ios-arrow-back" size={56} color="#000" />
+      </TouchableWithoutFeedback>
+      )
+    }
+  })
   
   let [toggled, setToggled] = useState(false);
   let [delayToggle, setDelayToggle] = useState(false);
@@ -113,13 +134,13 @@ export default function OrderScreen({navigation}) {
                         </Text>
                     </View>
                     <View className="flex flex-row">
-                        <Pressable onPress={() => navigation.navigate('Home')} className="bg-blue-500 w-[45px] h-[45px] mt-2 justify-center items-center mr-2 rounded-full">
+                        <Pressable className="bg-blue-500 w-[45px] h-[45px] mt-2 justify-center items-center mr-2 rounded-full">
                             <Image 
                                 className='w-[25px] h-[25px]'
                                 source={{uri: 'https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/phone-icon-18-256.png'}}
                             />
                         </Pressable>
-                        <Pressable onPress={() => navigation.navigate('Home')} className="bg-blue-500 w-[45px] h-[45px] mt-2 justify-center items-center rounded-full">
+                        <Pressable className="bg-blue-500 w-[45px] h-[45px] mt-2 justify-center items-center rounded-full">
                             <Image 
                                 className='w-[25px] h-[25px]'
                                 source={require('../images/text_icon.png')}

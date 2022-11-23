@@ -124,7 +124,9 @@ function HomeScreen({navigation, route}) {
         }
 
         {/* Dev Nav Buttons */}
-        <Pressable onPress={() => navigation.navigate('Order')} className="bg-white w-full items-center py-5 rounded-xl">
+        <Pressable onPress={() => navigation.navigate('Order', {
+          userInfo: userInfo
+        })} className="bg-white w-full items-center py-5 rounded-xl">
           <Text className="font-medium text-xl">Active Order</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Initial')} className="bg-white w-full items-center py-5 rounded-xl">
