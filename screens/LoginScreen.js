@@ -1,10 +1,27 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, Text, View, Pressable, Button, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, View, Pressable, Button, TextInput, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 function LoginScreen({navigation}) {
+
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "",
+        headerTransparent: true,
+        headerMode: "screen",
+        headerLeft: () => {
+          return (
+          <TouchableWithoutFeedback 
+              onPress={() => navigation.navigate('Initial')}
+          >
+            <Icon name="ios-arrow-back" size={56} color="#fff" />
+          </TouchableWithoutFeedback>
+          )
+        }
+      })
 
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState(""); //could be either email or phone number
@@ -16,7 +33,7 @@ function LoginScreen({navigation}) {
 
         if (userName.includes("@")) {
             console.log(userName, password);
-            fetch(`http://127.0.0.1:3000/loginUserByEmail/${userName}/${password}`)
+            fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/loginUserByEmail/${userName}/${password}`)
             .then(async(res) => await res.json())
             .then(async (data) => {
                 if (data == "Invalid User Name or Password")
@@ -33,7 +50,7 @@ function LoginScreen({navigation}) {
         } else {
             if (userName==="dev") { // Dev access to skip login
                 console.log("Dev access")
-                fetch(`http://127.0.0.1:3000/loginUserByEmail/dev@foodys.com/dev/`)
+                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/loginUserByEmail/dev@foodys.com/dev/`)
                 .then(async(res) => await res.json())
                 .then(async (data) => {
                     if (data == "Invalid User Name or Password")
@@ -50,7 +67,7 @@ function LoginScreen({navigation}) {
             } 
             else 
             {
-                fetch(`http://127.0.0.1:3000/loginUserByPhone/${userName}/${password}`)
+                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/loginUserByPhone/${userName}/${password}`)
                 .then(async(res) => await res.json())
                 .then((data) => {
                     if (data == "Invalid User Name or Password")

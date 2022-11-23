@@ -1,10 +1,27 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, Text, View, Pressable, Button, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, View, Pressable, Button, TextInput, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 function SignUpScreen({navigation}) {
+
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "",
+        headerTransparent: true,
+        headerMode: "screen",
+        headerLeft: () => {
+          return (
+          <TouchableWithoutFeedback 
+              onPress={() => navigation.navigate('Initial')}
+          >
+            <Icon name="ios-arrow-back" size={56} color="#fff" />
+          </TouchableWithoutFeedback>
+          )
+        }
+      })
 
   const [errorMessage, setErrorMessage] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,19 +39,25 @@ function SignUpScreen({navigation}) {
                 //setErrorMessage("Passwords Do Not Match") Already Displayed
             }
             else if (!decision) { // email
-                fetch(`http://127.0.0.1:3000/createUserByEmail/${email}/${password}`)
+                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/createUserByEmail/${email}/${password}`)
                     .then(async(res) => await res.json())
                     .then((data) => {
                         if (data == "success")
                         {
-                            fetch(`http://127.0.0.1:3000/getUserByEmail/${email}`)
+                            fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getUserByEmail/${email}`)
                             .then(async(res) => await res.json())
                             .then((data) => {
                                 let name = firstName + " " + lastName
-                                fetch(`http://127.0.0.1:3000/getUserByEmail/${data[0].id}/${name}`)
+                                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/updateUserName/${data[0].id}/${name}`)
                                 .then(async(res) => await res.json())
                                 .then((data) => {
-                                    navigation.navigate("Home");
+                                    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/loginUserByEmail/${email}/${password}`)
+                                    .then(async(res) => await res.json())
+                                    .then(async (data) => {
+                                        navigation.navigate('Home', {
+                                            userInfo: data
+                                        })
+                                    })
                                 })
                             })
                         }
@@ -44,19 +67,25 @@ function SignUpScreen({navigation}) {
                         }
                     })
             } else { // phone
-                fetch(`http://127.0.0.1:3000/createUserByEmail/${phoneNumber}/${password}`)
+                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/createUserByEmail/${phoneNumber}/${password}`)
                     .then(async(res) => await res.json())
                     .then((data) => {
                         if (data == "success")
                         {
-                            fetch(`http://127.0.0.1:3000/getUserByEmail/${phoneNumber}`)
+                            fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getUserByEmail/${phoneNumber}`)
                             .then(async(res) => await res.json())
                             .then((data) => {
                                 let name = firstName + " " + lastName
-                                fetch(`http://127.0.0.1:3000/getUserByEmail/${data[0].id}/${name}`)
+                                fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/updateUserName/${data[0].id}/${name}`)
                                 .then(async(res) => await res.json())
                                 .then((data) => {
-                                    navigation.navigate("Home");
+                                    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/loginUserByEmail/${email}/${password}`)
+                                    .then(async(res) => await res.json())
+                                    .then(async (data) => {
+                                        navigation.navigate('Home', {
+                                            userInfo: data
+                                        })
+                                    })
                                 })
                             })
                         }

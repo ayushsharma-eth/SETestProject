@@ -99,7 +99,7 @@ function RestaurantScreen({navigation, route}) {
   }
 
   const getMenu = () => {
-    fetch(`http://127.0.0.1:3000/getRMenu/${data.idRestaurant}`)
+    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRMenu/${data.idRestaurant}`)
     .then(async(res) => await res.json())
     .then((data) => {
       setMenu(data[0]);
@@ -147,7 +147,7 @@ function RestaurantScreen({navigation, route}) {
 
     let fullCart = [{"items":[cart]}]
 
-    fetch(`http://127.0.0.1:3000/createOrder/${JSON.stringify(fullCart)}/${userInfo[0].id}/${data.idRestaurant}/`)
+    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/createOrder/${JSON.stringify(fullCart)}/${userInfo[0].id}/${data.idRestaurant}/`)
     .then(async(res) => await res.json())
     .then((data) => {
       navigation.navigate('Home', {

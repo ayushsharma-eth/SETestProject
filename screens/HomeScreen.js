@@ -51,7 +51,7 @@ function HomeScreen({navigation, route}) {
   const [restaurants, setRestaurants] = useState([]);
 
   const getText = () => {
-    fetch('http://127.0.0.1:3000/getRestaurant/4')
+    fetch('http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRestaurant/4')
     .then(async(res) => await res.json())
     .then((data) => {
       console.log(data);
@@ -60,18 +60,18 @@ function HomeScreen({navigation, route}) {
   }
 
   const getRestaurants = () => {
-    fetch('http://127.0.0.1:3000/getRestaurant/4')
+    fetch('http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRestaurant/4')
     .then(async(res) => await res.json())
     .then((data) => {
       setRestaurants(restaurants => [...restaurants, data[0]])
     })
-    fetch('http://127.0.0.1:3000/getRestaurant/5')
+    fetch('http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRestaurant/5')
     .then(async(res) => await res.json())
     .then((data) => {
       setRestaurants(restaurants => [...restaurants, data[0]])
       console.log(data[0]);
     })
-    fetch('http://127.0.0.1:3000/getRestaurant/6')
+    fetch('http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRestaurant/6')
     .then(async(res) => await res.json())
     .then((data) => {
       setRestaurants(restaurants => [...restaurants, data[0]])
