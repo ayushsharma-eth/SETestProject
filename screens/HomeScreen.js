@@ -18,12 +18,13 @@ import * as Location from 'expo-location';
 // Component to Show Restaurants quickly
 
 
-function RestaurantCard({navigation, data}) {
+function RestaurantCard({navigation, data, userInfo}) {
 
   return (
       <TouchableOpacity className='border-2 border-gray-300 rounded-2xl w-[85vw] pb-2 mt-8' 
         onPress={() => navigation.navigate('Restaurant', {
-          data: data
+          data: data,
+          userInfo: userInfo
         })}
       >
         <ImageBackground
@@ -42,8 +43,9 @@ function RestaurantCard({navigation, data}) {
   )
 }
 
-function HomeScreen({navigation}) {
+function HomeScreen({navigation, route}) {
 
+  const { userInfo } = route.params;
   const [text, setText] = useState('have not called');
 
   const [restaurants, setRestaurants] = useState([]);
@@ -116,7 +118,7 @@ function HomeScreen({navigation}) {
         {
           restaurants.map((e, i) => {
             return (
-              <RestaurantCard navigation={navigation} data={restaurants[i]} />
+              <RestaurantCard navigation={navigation} data={restaurants[i]} userInfo={userInfo} />
             )
           })
         }

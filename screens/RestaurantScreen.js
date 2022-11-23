@@ -1,8 +1,9 @@
-import { ScrollView, Text, View, Pressable, ImageBackground, Image } from 'react-native';
+import { ScrollView, Text, View, Pressable, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native-web';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // Component to handle generic meal cards. (These appear as menu items on the Restaurant screen)
 
@@ -66,7 +67,25 @@ function MealCard({data, quantity, updateQuantity, index}) {
 // Displays Restaurant Menu
 function RestaurantScreen({navigation, route}) {
 
-  const { data } = route.params;
+  navigation.setOptions({
+    headerShown: true,
+    headerTitle: "",
+    headerTransparent: true,
+    headerMode: "screen",
+    headerLeft: () => {
+      return (
+      <TouchableWithoutFeedback 
+          onPress={() => navigation.navigate('Home', {
+            userInfo: userInfo
+          })}
+      >
+        <Icon name="ios-arrow-back" size={56} color="#fff" />
+      </TouchableWithoutFeedback>
+      )
+    }
+  })
+
+  const { data, userInfo } = route.params;
   const [ menu, setMenu ] = useState([]);
   const [ quantities, setQuantities ] = useState([]);
   const [ totalItems, setTotalItems ] = useState(0);
@@ -104,14 +123,44 @@ function RestaurantScreen({navigation, route}) {
     }
     setTotalItems(temp);
   }, [quantities])
+
+  const checkout = () => { // this function would be on payment screen
+    let order = [{ // for future reference, this is the complete order structure in database
+        "restaurant":data.idRestaurant, // id
+        "customer":2, // id
+        "driver":null,
+        "xCor":null,
+        "yCor":null,
+        "customer_location":null,
+        "special_instructions":null,
+        "order":[{"items":[{"name":"caramel macciato", "size":"grande", "cost":"4.00", "quantity":"1", "modifications":"none"}]}],
+        "customerX":null,
+        "customerY":null
+    }]
+
+    let cart = [];
+    for (var i = 0; i < totalItems; i++)
+    {
+        if(quantities[i]) // if at least one ordered
+            cart.push({"name":`${menu[i].name}`, "size":"null", "cost":`${menu[i].cost}`, "quantity":`${quantities[i]}`, "modifications":"none" })
+    }
+
+    let fullCart = [{"items":[cart]}]
+
+    fetch(`http://127.0.0.1:3000/createOrder/${JSON.stringify(fullCart)}/${userInfo[0].id}/${data.idRestaurant}/`)
+    .then(async(res) => await res.json())
+    .then((data) => {
+      navigation.navigate('Home', {
+        userInfo: userInfo
+      }); 
+    })
+
+  }
   
 
   return (
-    <View>
-        <ScrollView  className="bg-white">
-            {/* Top View is a banner image with text */}
-            <View className="flex-1 items-center bg-white">
-                <ImageBackground
+    <View className='w-full items-center bg-white'>
+        <ImageBackground
                     className='w-[100vw] h-[250px] pt-[100px]'
                     source={{uri: 'https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/f4382bb2-c3de-4c33-bb65-fa144e999906.jpg'}}
                 >
@@ -119,6 +168,11 @@ function RestaurantScreen({navigation, route}) {
                     <Text className='text-5xl text-white font-bold'>{data.name}</Text>
                     </View>
                 </ImageBackground>
+        <ScrollView  className="bg-white">
+            {/* Top View is a banner image with text */}
+            
+            <View className="flex-1 items-center bg-white">
+                
                 
                 {/* Example Meal Cards to See List*/}
 
@@ -131,13 +185,13 @@ function RestaurantScreen({navigation, route}) {
                     )
                 })
                 }
-            </View>
+                </View>
         </ScrollView>
-        {totalItems > 0 && <View className='absolute bottom-5 items-center w-full'>
+        {totalItems > 0 && <View className='absolute bottom-5 items-center'>
             <View className='bg-red-400 p-4 rounded-full'>
             <Pressable className="flex flex-row justify-center w-[150px]"
             onPress={() => {
-                navigation.navigate('Home');
+                checkout();
             }}>
                 <Text className='text-white text-lg font-bold my-auto pr-2'>Checkout</Text>
                 <View className="bg-white rounded-full px-3 py-2 ml-2 my-auto">

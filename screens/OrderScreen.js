@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useDidMountEffect from '../hooks/useDidMountEffect';
 
+import banana from './banana.png'
 
 import MapView from 'react-native-maps';
 

@@ -10,7 +10,6 @@ function LoginScreen({navigation}) {
   const [userName, setUserName] = useState(""); //could be either email or phone number
   const [password, setPassword] = useState("");
 
-
   const loginUser = () => {
 
     if (userName && password) {
@@ -19,19 +18,35 @@ function LoginScreen({navigation}) {
             console.log(userName, password);
             fetch(`http://127.0.0.1:3000/loginUserByEmail/${userName}/${password}`)
             .then(async(res) => await res.json())
-            .then((data) => {
+            .then(async (data) => {
                 if (data == "Invalid User Name or Password")
                 {
                     setErrorMessage("Invalid User Name or Password")
                 }
                 else
                 {
-                    navigation.navigate('Home');
+                    navigation.navigate('Home', {
+                        userInfo: data
+                    })
                 }
             })
         } else {
             if (userName==="dev") { // Dev access to skip login
-                navigation.navigate('Home');
+                console.log("Dev access")
+                fetch(`http://127.0.0.1:3000/loginUserByEmail/dev@foodys.com/dev/`)
+                .then(async(res) => await res.json())
+                .then(async (data) => {
+                    if (data == "Invalid User Name or Password")
+                    {
+                        setErrorMessage("Invalid User Name or Password")
+                    }
+                    else
+                    {
+                        navigation.navigate('Home', {
+                            userInfo: data
+                        })
+                    }
+                })
             } 
             else 
             {
@@ -44,7 +59,9 @@ function LoginScreen({navigation}) {
                     }
                     else
                     {
-                        navigation.navigate('Home');
+                        navigation.navigate('Home', {
+                            userInfo: data
+                        })
                     }
                 })
             }
