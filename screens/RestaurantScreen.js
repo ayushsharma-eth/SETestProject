@@ -185,6 +185,13 @@ function RestaurantScreen({navigation, route}) {
                     )
                 })
                 }
+                {/* { menu && quantities && <View>
+                <MealCard data={menu[0]} quantity={quantities[0]} updateQuantity={updateQuantity} index={0}/>
+                <MealCard data={menu[0]} quantity={quantities[0]} updateQuantity={updateQuantity} index={0}/>
+                <MealCard data={menu[0]} quantity={quantities[0]} updateQuantity={updateQuantity} index={0}/>
+                <MealCard data={menu[0]} quantity={quantities[0]} updateQuantity={updateQuantity} index={0}/>
+                <MealCard data={menu[0]} quantity={quantities[0]} updateQuantity={updateQuantity} index={0}/>
+                </View> } */}
                 </View>
         </ScrollView>
         {totalItems > 0 && <View className='absolute bottom-5 items-center'>
