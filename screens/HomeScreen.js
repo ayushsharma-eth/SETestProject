@@ -69,7 +69,8 @@ function OrderCard({navigation, data, userInfo}) {
   return (
     <TouchableOpacity className='border-2 border-gray-300 rounded-2xl w-[85vw] pb-2 mt-4' 
       onPress={() => navigation.navigate('Order', {
-        userInfo: userInfo
+        userInfo: userInfo,
+        orderId: data.restaurant
       })}
     >
       <View className="flex flex-row justify-between">

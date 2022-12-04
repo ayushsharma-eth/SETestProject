@@ -16,7 +16,8 @@ import { Marker } from 'react-native-maps';
 
 export default function OrderScreen({navigation, route}) {
 
-  const { userInfo } = route.params;
+  const { userInfo, orderId } = route.params;
+  const [order, setOrder] = useState([]);
 
   navigation.setOptions({
     headerShown: true,
@@ -71,6 +72,21 @@ export default function OrderScreen({navigation, route}) {
 
   const statusMessage = "Driving to Restaurant" // get from Server
   const ETA = "10:15 am" // get from Server
+
+
+  const getOrderDetails = () => {
+    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getOrderAsJson/${orderId}`)
+    .then(async(res) => await res.json())
+    .then((data) => {
+      setOrder(data)
+      console.log("Orders", data)
+    })
+  }
+
+  useEffect(() => {
+    getOrderDetails();
+  }, [])
+
 
   return (
     <View>
