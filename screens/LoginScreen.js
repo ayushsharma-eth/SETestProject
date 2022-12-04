@@ -43,7 +43,8 @@ function LoginScreen({navigation}) {
                 else
                 {
                     navigation.navigate('Home', {
-                        userInfo: data
+                        userId: data[0].id,
+                        delta: 0
                     })
                 }
             })
@@ -60,7 +61,8 @@ function LoginScreen({navigation}) {
                     else
                     {
                         navigation.navigate('Home', {
-                            userInfo: data
+                            userId: data[0].id,
+                            delta: 0
                         })
                     }
                 })
@@ -77,7 +79,8 @@ function LoginScreen({navigation}) {
                     else
                     {
                         navigation.navigate('Home', {
-                            userInfo: data
+                            userId: data[0].id,
+                            delta: 0
                         })
                     }
                 })
@@ -106,12 +109,12 @@ function LoginScreen({navigation}) {
             </Text>
         </View>
         }
-        <TextInput className="w-[80vw] h-[50px] bg-white rounded-full p-4 mb-4 text-red-300" placeholder="Email or Phone Number" 
+        <TextInput autoCapitalize="none" className="w-[80vw] h-[50px] bg-white rounded-full p-4 mb-4 text-black" placeholder="Email or Phone Number" 
             onChangeText={(text) => {
                 setUserName(text.toLowerCase());
             }}
         />
-        <TextInput className="w-[80vw] h-[50px] bg-white rounded-full p-4 mb-8 text-red-300" placeholder="Password" 
+        <TextInput autoCapitalize="none" className="w-[80vw] h-[50px] bg-white rounded-full p-4 mb-8 text-black" placeholder="Password" 
             onChangeText={(text) => {
                 setPassword(text);
             }}

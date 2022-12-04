@@ -8,6 +8,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 import RestaurantScreen from './screens/RestaurantScreen';
 import OrderScreen from './screens/OrderScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Screen name='SignUp' component={SignUpScreen} options={{headerShown: false}}/>
         <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}} />
         <Stack.Screen name='Restaurant' component={RestaurantScreen} />
+        <Stack.Screen name='Profile' component={ProfileScreen} />
         <Stack.Screen name='Order' component={OrderScreen} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>

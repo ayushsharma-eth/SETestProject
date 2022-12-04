@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, Text, View, Pressable, ImageBackground, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, View, Pressable, ImageBackground, TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useDidMountEffect from '../hooks/useDidMountEffect';
+
+import { useIsFocused } from '@react-navigation/native';
+
 
 const fetch = require("node-fetch");
 
@@ -82,10 +85,14 @@ function OrderCard({navigation, userInfo}) {
 
 function HomeScreen({navigation, route}) {
 
-  const { userInfo } = route.params;
+  const { userId } = route.params;
   const [text, setText] = useState('have not called');
 
   const [restaurants, setRestaurants] = useState([]);
+
+  const [address, setAddress] = useState("");
+
+  const [userInfo, setUserInfo] = useState([]);
 
   const getText = () => {
     fetch('http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getRestaurant/4')
@@ -116,9 +123,25 @@ function HomeScreen({navigation, route}) {
     
   }
 
+  const getUserInfo = () => {
+    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/getUserByID/${userId}`)
+    .then(async(res) => await res.json())
+    .then((data) => {
+      setUserInfo(data);
+      console.log("pls", data);
+    })
+  }
+
   useEffect(() => {
     getRestaurants();
   }, [])
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getUserInfo();
+    console.log("reloaded")
+  }, [isFocused])
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -147,9 +170,34 @@ function HomeScreen({navigation, route}) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 items-center justify-center bg-white">
+      
+      { userInfo.length ? <View className="flex-1 items-center justify-center bg-white">
         <View className='h-16'/>
-        <Text className="text-4xl text-left w-[85vw] font-bold">Welcome Name</Text>
+        <View className='flex flex-row w-[85vw] justify-between mx-auto'>
+          <View className='w-[65vw]'>
+            <Text className="text-4xl font-bold">Welcome {userInfo[0].username.split(" ")[0]}</Text>
+            <View className="flex flex-row">
+              <Text className="text-md font-bold">1600 Pennsylvania Avenue NW, Washington, DC 20500</Text>
+              <Image 
+                className='w-[20px] h-[20px] my-auto ml-2'
+                source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
+              />
+            </View>
+          </View>
+          <TouchableOpacity className='w-[60px] h-[60px] my-auto'
+            onPress={() => {
+              navigation.navigate('Profile', {
+                userId: userId
+              })}
+            }
+          >
+            <Image 
+              className='w-[60px] h-[60px] rounded-full'
+              source={{uri: 'https://image.shutterstock.com/image-photo/stock-photo-close-up-headshot-portrait-of-smiling-s-caucasian-man-look-at-camera-posing-in-own-flat-or-250nw-1936610998.jpg'}}
+              
+            />
+          </TouchableOpacity>
+        </View>
         <Text className="text-3xl text-left w-[85vw] mt-8 font-medium">Active Orders</Text>
 
         <OrderCard navigation={navigation} userInfo={userInfo}/>
@@ -157,7 +205,7 @@ function HomeScreen({navigation, route}) {
         <Text className="text-3xl text-left w-[85vw] mt-8 font-medium">Restaurants</Text>
         {/* Render all restaurants */}
         {/* <View className='h-4'/> */}
-        {
+        { userInfo &&
           restaurants.map((e, i) => {
             return (
               <RestaurantCard navigation={navigation} data={restaurants[i]} userInfo={userInfo} />
@@ -194,7 +242,8 @@ function HomeScreen({navigation, route}) {
         </MapView>
             
 
-      </View>
+      </View> 
+      : <Text>Invalid login</Text>}    
     </ScrollView>
   )
 }

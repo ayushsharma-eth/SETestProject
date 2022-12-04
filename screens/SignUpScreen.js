@@ -55,7 +55,8 @@ function SignUpScreen({navigation}) {
                                     .then(async(res) => await res.json())
                                     .then(async (data) => {
                                         navigation.navigate('Home', {
-                                            userInfo: data
+                                            userId: data[0].id,
+                                            delta: 0
                                         })
                                     })
                                 })
@@ -83,7 +84,8 @@ function SignUpScreen({navigation}) {
                                     .then(async(res) => await res.json())
                                     .then(async (data) => {
                                         navigation.navigate('Home', {
-                                            userInfo: data
+                                            userId: data[0].id,
+                                            delta: 0
                                         })
                                     })
                                 })

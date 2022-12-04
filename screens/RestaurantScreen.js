@@ -135,7 +135,8 @@ function RestaurantScreen({navigation, route}) {
         "special_instructions":null,
         "order":[{"items":[{"name":"caramel macciato", "size":"grande", "cost":"4.00", "quantity":"1", "modifications":"none"}]}],
         "customerX":null,
-        "customerY":null
+        "customerY":null,
+        "status": "active"
     }]
 
     let cart = [];
