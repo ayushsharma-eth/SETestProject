@@ -76,7 +76,7 @@ function RestaurantScreen({navigation, route}) {
       return (
       <TouchableWithoutFeedback 
           onPress={() => navigation.navigate('Home', {
-            userInfo: userInfo
+            userId: userInfo[0].id
           })}
       >
         <Icon name="ios-arrow-back" size={56} color="#fff" />
@@ -148,11 +148,12 @@ function RestaurantScreen({navigation, route}) {
 
     let fullCart = [{"items":[cart]}]
 
-    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/createOrder/${JSON.stringify(fullCart)}/${userInfo[0].id}/${data.idRestaurant}/`)
+    fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/createOrder/${JSON.stringify(fullCart)}/${userInfo[0].id}/${data.idRestaurant}/1`)
     .then(async(res) => await res.json())
     .then((data) => {
+        console.log("checkout", data);
       navigation.navigate('Home', {
-        userInfo: userInfo
+        userId: userInfo[0].id
       }); 
     })
 

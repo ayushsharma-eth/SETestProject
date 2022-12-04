@@ -6,6 +6,16 @@ import useDidMountEffect from '../hooks/useDidMountEffect';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
+function RadioButton(props) {
+    return (
+        <View className='rounded-full h-7 w-7 bg-black'>
+            <View className='rounded-full h-6 w-6 bg-white my-auto mx-auto'>
+                { props.selected && <View className='rounded-full h-4 w-4 bg-black my-auto mx-auto' />}
+            </View>
+        </View>
+    )
+}
+
 
 function ProfileScreen({navigation, route}) {
 
@@ -22,6 +32,7 @@ function ProfileScreen({navigation, route}) {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
 
     navigation.setOptions({
         headerShown: true,
@@ -67,6 +78,14 @@ function ProfileScreen({navigation, route}) {
         })
     }
 
+    const changePhone = () => {
+        fetch(`http://sebackend-env.eba-tmkzmafs.us-east-1.elasticbeanstalk.com/updateUserPhone/${userInfo[0].id}/${phone}/`)
+        .then(async(res) => await res.json())
+        .then((data) => {
+            console.log(data);
+        })
+    }
+
     useEffect(() => {
         getUserInfo();
     }, [update])
@@ -75,7 +94,7 @@ function ProfileScreen({navigation, route}) {
     <View>
         <View className='h-32'/>
         { userInfo.length ? 
-        <View className='w-[85vw] mx-auto'>
+        <View className='w-[85vw] h-full mx-auto'>
             <Text className='text-5xl font-medium'>Profile</Text>
             {modifyName 
                 ? <View className='flex flex-row mt-8 justify-between'>
@@ -128,19 +147,25 @@ function ProfileScreen({navigation, route}) {
                     </TouchableOpacity>
                 </View>
             }
-            {userInfo[0].email
-            ?  (modifyEmail 
+            {modifyEmail 
                 ? <View className='flex flex-row mt-2 justify-between'>
                     <View className='flex flex-row'>
                         <Text className='text-xl'>Email: </Text>
-                        <TextInput className='text-xl bg-white w-[57.5vw] h-6 rounded-full pl-3 pt-[-100px] my-auto'
+                        { userInfo[0].email 
+                            ? <TextInput autoCapitalize="none" className='text-xl bg-white w-[57.5vw] h-6 rounded-full pl-3 pt-[-100px] my-auto'
+                                onChangeText={(text) => {
+                                    setEmail(text.toLowerCase());
+                                }}
+                                placeholder={userInfo[0].email}
+                            />
+                            : <TextInput autoCapitalize="none" className='text-xl bg-white w-[57.5vw] h-6 rounded-full pl-3 pt-[-100px] my-auto'
                             onChangeText={(text) => {
                                 setEmail(text.toLowerCase());
                             }}
-                            placeholder={userInfo[0].email}
-                        >
+                            placeholder="Set Email"
+                            />
+                        }
                             
-                        </TextInput>
                     </View>
                     {/* Approve Change */}
                     <TouchableOpacity className='w-[25px] h-[25px] my-auto mr-[-5px]'
@@ -167,7 +192,9 @@ function ProfileScreen({navigation, route}) {
                     </TouchableOpacity>
                 </View>
                 : <View className='flex flex-row mt-2 justify-between'>
-                    <Text className='text-xl font'>Email: {userInfo[0].email}</Text>
+                    {userInfo[0].email 
+                    ? <Text className='text-xl font'>Email: {userInfo[0].email}</Text>
+                    : <Text className='text-xl font'>Email: Set Email Address</Text>}
                     <TouchableOpacity className='w-[20px] h-[20px] my-auto'
                         onPress={() => {
                             setModifyEmail(true)
@@ -178,49 +205,83 @@ function ProfileScreen({navigation, route}) {
                             source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
                         />
                     </TouchableOpacity>
-                </View>)
-            :  <Text className='text-xl mt-2 font'>Email: Set Email</Text> }
-            {userInfo[0].phone_number 
-            ?  (modifyPhone 
-                ? <View className='flex flex-row mt-2 justify-between'>
-                    <Text className='text-xl font'>Phone: {userInfo[0].phone_number}</Text>
-                    <Image 
-                        className='w-[20px] h-[20px] my-auto'
-                        source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
-                    />
                 </View>
-                : <View className='flex flex-row mt-2 justify-between'>
-                    <Text className='text-xl font'>Phone: {userInfo[0].phone_number}</Text>
+            }
+            {modifyPhone
+                ? <View className='flex flex-row mt-2 justify-between'>
+                    <View className='flex flex-row'>
+                        <Text className='text-xl'>Phone: </Text>
+                        { userInfo[0].phone_number 
+                            ? <TextInput autoCapitalize="none" className='text-xl bg-white w-[57.5vw] h-6 rounded-full pl-3 pt-[-100px] my-auto'
+                                onChangeText={(text) => {
+                                    setPhone(text.toLowerCase());
+                                }}
+                                placeholder={userInfo[0].phone_number}
+                            />
+                            : <TextInput autoCapitalize="none" className='text-xl bg-white w-[57.5vw] h-6 rounded-full pl-3 pt-[-100px] my-auto'
+                            onChangeText={(text) => {
+                                setPhone(text.toLowerCase());
+                            }}
+                            placeholder="Set Phone Number"
+                            />
+                        }
+                            
+                    </View>
+                    {/* Approve Change */}
+                    <TouchableOpacity className='w-[25px] h-[25px] my-auto mr-[-5px]'
+                        onPress={() => {
+                            changePhone();
+                            setUpdate(update + 1);
+                            setModifyPhone(false);
+                        }}
+                    >
+                        <Image 
+                            className='w-[25px] h-[25px]'
+                            source={require('../images/checkmark.png')}
+                        />
+                    </TouchableOpacity>
                     <TouchableOpacity className='w-[20px] h-[20px] my-auto'
                         onPress={() => {
-                        navigation.navigate('Home', {
-                            userInfo: userInfo
-                        })}
-                        }
+                            setModifyPhone(false)
+                        }}
+                    >
+                        <Image 
+                            className='w-[20px] h-[20px]'
+                            source={require('../images/xMark.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+                : <View className='flex flex-row mt-2 justify-between'>
+                    {userInfo[0].phone_number 
+                    ? <Text className='text-xl font'>Phone: {userInfo[0].phone_number}</Text>
+                    : <Text className='text-xl font'>Phone: Set Phone Number</Text>}
+                    <TouchableOpacity className='w-[20px] h-[20px] my-auto'
+                        onPress={() => {
+                            setModifyPhone(true)
+                        }}
                     >
                         <Image 
                             className='w-[20px] h-[20px]'
                             source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
                         />
                     </TouchableOpacity>
-                </View>)
-            :  <View className='flex flex-row mt-2 justify-between'>
-                <Text className='text-xl font'>Phone: Set Phone Number</Text>
-                <TouchableOpacity className='w-[20px] h-[20px] my-auto'
-                    onPress={() => {
-                    navigation.navigate('Home', {
-                        userInfo: userInfo
-                    })}
-                    }
-                >
-                    <Image 
-                        className='w-[20px] h-[20px]'
-                        source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
-                    />
-                </TouchableOpacity>
-            </View> }
+                </View>
+            }
             
             <Text className='text-xl mt-2 font'>Addresses: </Text>
+
+            <RadioButton selected={true} />
+            <RadioButton selected={false} />
+
+            <RadioButton selected={false} />
+
+            <Pressable onPress={() => navigation.navigate('Initial')} className="bg-blue-500 w-[65vw] items-center py-5 rounded-xl mx-auto">
+                <Text className="font-bold text-xl text-white">View Order History</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('Initial')} className="bg-red-500 w-[65vw] items-center py-5 mt-4 rounded-xl mx-auto">
+                <Text className="font-bold text-xl text-white">Sign Out</Text>
+            </Pressable>
+            
         </View>
         : <Text>Loading...</Text>
         }

@@ -27,7 +27,7 @@ export default function OrderScreen({navigation, route}) {
       return (
       <TouchableWithoutFeedback 
           onPress={() => navigation.navigate('Home', {
-            userInfo: userInfo
+            userId: userInfo[0].id
           })}
       >
         <Icon name="ios-arrow-back" size={56} color="#000" />
