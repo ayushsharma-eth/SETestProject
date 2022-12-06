@@ -25,7 +25,7 @@ navigation.setOptions({
     }
 })
   return (
-    <div>OrderHistory</div>
+    <Text>OrderHistory</Text>
   )
 }
 

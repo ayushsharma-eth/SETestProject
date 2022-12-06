@@ -168,6 +168,7 @@ function HomeScreen({navigation, route}) {
 
   useEffect(() => {
     getUserInfo();
+    getCurrentOrders();
     console.log("reloaded")
   }, [isFocused])
 
@@ -205,7 +206,7 @@ function HomeScreen({navigation, route}) {
           <View className='w-[65vw]'>
             <Text className="text-4xl font-bold">Welcome {userInfo[0].username.split(" ")[0]}</Text>
             <View className="flex flex-row">
-              <Text className="text-md font-bold">1600 Pennsylvania Avenue NW, Washington, DC 20500</Text>
+              {location && <Text className="text-md font-bold">{location.coords.latitude}, {location.coords.longitude}</Text>}
               <Image 
                 className='w-[20px] h-[20px] my-auto ml-2'
                 source={{uri: 'https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png'}}
@@ -226,7 +227,7 @@ function HomeScreen({navigation, route}) {
             />
           </TouchableOpacity>
         </View>
-        <Text className="text-3xl text-left w-[85vw] mt-8 font-medium">Active Orders</Text>
+        {orders.length > 0 && <Text className="text-3xl text-left w-[85vw] mt-8 font-medium">Active Orders</Text>}
 
         {orders.map((e, i) => {
           return (
@@ -246,11 +247,11 @@ function HomeScreen({navigation, route}) {
           })
         }
 
-        {/* Dev Nav Buttons */}
+        {/* Dev Nav Buttons
         
         <Pressable onPress={() => getText()} className="bg-white w-full items-center py-5 rounded-xl">
           <Text className="font-medium text-xl">{texte}</Text>
-        </Pressable>
+        </Pressable> */}
 
       </View> 
       : <Text>Invalid login</Text>}    

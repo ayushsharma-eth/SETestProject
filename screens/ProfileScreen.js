@@ -268,14 +268,14 @@ function ProfileScreen({navigation, route}) {
                 </View>
             }
             
-            <Text className='text-xl mt-2 font'>Addresses: </Text>
+            {/* <Text className='text-xl mt-2 font'>Addresses: </Text>
 
             <RadioButton selected={true} />
             <RadioButton selected={false} />
 
-            <RadioButton selected={false} />
+            <RadioButton selected={false} /> */}
 
-            <Pressable onPress={() => navigation.navigate('Initial')} className="bg-blue-500 w-[65vw] items-center py-5 rounded-xl mx-auto">
+            <Pressable onPress={() => navigation.navigate('OrderHistory')} className="bg-blue-500 w-[65vw] items-center py-5 mt-[45vh] rounded-xl mx-auto">
                 <Text className="font-bold text-xl text-white">View Order History</Text>
             </Pressable>
             <Pressable onPress={() => navigation.navigate('Initial')} className="bg-red-500 w-[65vw] items-center py-5 mt-4 rounded-xl mx-auto">

@@ -6,8 +6,8 @@ function InitialScreen({navigation}) {
   return (
     <View className="flex-1 bg-blue-500 items-center justify-center">
       <View className="flex-1 items-center justify-center">
-        <Text className='text-xl'>[Customer App]</Text>
-        <Text className='text-xl'>Logo Goes Here</Text>
+        <Text className='text-5xl text-white font-bold'>Foodys</Text>
+        <Text className='text-xl text-white font-medium'>We Got The Goodys</Text>
       </View>
       {/* Login and Sign Up with pull up different forms, but for now, skip to Home page */}
       <View className="w-[80vw] mb-20">
