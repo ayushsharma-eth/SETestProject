@@ -1,3 +1,5 @@
+// This hook is from https://stackoverflow.com/a/57941438
+
 import React, { useEffect, useRef } from 'react';
 
 const useDidMountEffect = (func, deps) => {
